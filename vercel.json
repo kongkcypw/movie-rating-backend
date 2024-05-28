@@ -2,8 +2,8 @@
     "version": 2,
     "build": [
         {
-            "source": "/index.js",
-            "destination": "@now/node"
+            "src": "/index.js",
+            "use": "@now/node"
         }
     ],
     "routes": [
