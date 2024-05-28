@@ -37,9 +37,9 @@ exports.findUser = async (username) => {
             username = '${username}' OR email = '${username}';`
         const [rows] = await mysqlDB.query(query);
         if (rows.length > 0) {
-            return rows[0];  // Return the first row
+            return rows[0];  
         } else {
-            return null;  // No user found
+            return null;  
         }
     } catch (error) {
         console.log(error);
@@ -97,9 +97,9 @@ exports.checkEmailAlreadyExist = async (email) => {
             email = '${email}';`
         const [rows] = await mysqlDB.query(query);
         if (rows.length > 0) {
-            return rows[0];  // Return the first row
+            return rows[0]; 
         } else {
-            return null;  // No user found
+            return null;  
         }
     } catch (error) {
         console.log(error);
@@ -117,11 +117,7 @@ exports.checkRepeatedUserId = async (userId) => {
         WHERE
             userId = '${userId}';`
         const [rows] = await mysqlDB.query(query);
-        if (rows.length > 0) {
-            return rows[0];  // Return the first row
-        } else {
-            return null;  // No user found
-        }
+        return rows.length > 0;
     } catch (error) {
         console.log(error);
         throw error
