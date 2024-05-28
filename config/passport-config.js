@@ -16,6 +16,7 @@ module.exports = (passport) => {
                 const user = {
                     userId: jwtPayload.userId,
                     role: jwtPayload.role,
+                    permissionLevel: jwtPayload.permissionLevel
                 };
                 return done(null, user);
             }

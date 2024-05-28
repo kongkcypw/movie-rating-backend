@@ -44,7 +44,7 @@ exports.login = async (req, res, next) => {
         const user = await findUser(username);
 
         if (!user || user.length === 0) {
-            return res.status(400).json({ message: "You don't have account yet, please sign up" })
+            return res.status(401).json({ message: "You don't have account yet, please sign up" })
         }
 
         if (user) {
@@ -60,7 +60,7 @@ exports.login = async (req, res, next) => {
             });
     
             if (!isMatch) {
-                return res.status(401).json({ message: 'Incorrect email or password.'});
+                return res.status(400).json({ message: 'Incorrect email or password.'});
             }
 
             const { accessToken, refreshToken } = createTokens(user);
