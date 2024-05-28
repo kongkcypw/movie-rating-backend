@@ -33,6 +33,11 @@ app.use(passport.initialize());
 // match endpoint
 app.use('/api', routes)
 
+// basic route
+app.get('/', function (req, res) {
+    res.json({ message: 'Express is working' });
+});
+
 // 
 app.listen(PORT, () => {
     console.log(`Server is running at https://localhost:${PORT}`)
