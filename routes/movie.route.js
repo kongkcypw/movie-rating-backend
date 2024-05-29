@@ -9,10 +9,24 @@ router.post(
     movieController.add_new
 );
 
+router.post("/get-public", movieController.get_public);
+
 router.get(
     "/get-all", 
     passport.authenticate('jwt', { session: false }),
     movieController.get_all
+);
+
+router.post(
+    "/update", 
+    passport.authenticate('jwt', { session: false }),
+    movieController.update
+);
+
+router.post(
+    "/delete", 
+    passport.authenticate('jwt', { session: false }),
+    movieController.delete
 );
 
 module.exports = router;
