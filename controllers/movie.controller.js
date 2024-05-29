@@ -1,4 +1,4 @@
-const { insertMovie, checkRepeatedMovieId, getAllMovie, updateMovie, deleteMovie, getPublicMoviesByYearRange, checkRepeatedMovieTitle } = require("../models/movie.model");
+const { insertMovie, checkRepeatedMovieId, getAllMovie, updateMovie, deleteMovie, getPublicMoviesByYearRange, checkRepeatedMovieTitle, getMovieCountsByYear, getMovieCountsByRating, getOldestMovie, getNewestMovie, getCountAllMovies } = require("../models/movie.model");
 const { uuidv7 } = require('uuidv7');
 const { getAllRateId } = require("../models/rate.model");
 
@@ -110,12 +110,70 @@ exports.delete = async (req, res) => {
         const permissionLevel = req.user.permissionLevel;
         console.log(`permissionLevel ${permissionLevel}`);
 
-        if (permissionLevel < 1) {
+        if (permissionLevel < 2) {
             return res.status(423).json({ message: "you don't have permission to delete movie" });
         }
         const result = await deleteMovie(movieId);
 
         res.status(200).json({ message: "delete movie success", result: result });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'An error occurred while delete movie',
+        });
+    }
+};
+
+exports.getCountByYear = async (req, res) => {
+    try {
+        const { } = req.body;
+        const permissionLevel = req.user.permissionLevel;
+
+        if (permissionLevel < 1) {
+            return res.status(423).json({ message: "you don't have permission to get data" });
+        }
+        const result = await getMovieCountsByYear();
+        res.status(200).json({ message: "get movie count by year success", result: result });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'An error occurred while update movie',
+        });
+    }
+};
+
+exports.getCountByRating = async (req, res) => {
+    try {
+        const permissionLevel = req.user.permissionLevel;
+
+        if (permissionLevel < 1) {
+            return res.status(423).json({ message: "you don't have permission to get data" });
+        }
+        const result = await getMovieCountsByRating();
+        res.status(200).json({ message: "get movie count by year success", result: result });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'An error occurred while update movie',
+        });
+    }
+};
+
+exports.getOverview = async (req, res) => {
+    try {
+        const permissionLevel = req.user.permissionLevel;
+
+        if (permissionLevel < 1) {
+            return res.status(423).json({ message: "you don't have permission to get data" });
+        }
+
+        const oldestMovie = await getOldestMovie();
+        const newestMovie = await getNewestMovie();
+        const totalMovies = await getCountAllMovies();
+
+        const overview = { oldestMovie:oldestMovie, newestMovie:newestMovie, totalMovies:totalMovies }
+
+        res.status(200).json({ message: "get movie count by year success", result: overview });
     } catch (error) {
         console.error(error);
         res.status(500).json({

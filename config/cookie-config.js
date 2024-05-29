@@ -13,24 +13,24 @@
 //         Credentials: true,
 //     },
 // };
-// module.exports = cookieConfig;
 
-// DEPLOY VERSION
+
+//  DEPLOY VERSION
 const isProduction = process.env.NODE_ENV === 'production';
 const cookieConfig = {
     options: {
         httpOnly: true,
-        secure: isProduction, // Set to true in production
+        secure: isProduction, 
         maxAge: 60 * 60 * 1000, // 1 hour
-        sameSite: 'None', // Allow cross-site cookies (set to 'Lax' or 'Strict' as needed)
-        credentials: 'include', // Ensure credentials are included in cross-site requests
+        sameSite: 'None', // Allow cross-site cookies 
+        credentials: 'include', // included in cross-site requests
     },
     refreshOptions: {
         httpOnly: false,
-        secure: isProduction, // Set to true in production
+        secure: isProduction, 
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        sameSite: 'None', // Allow cross-site cookies (set to 'Lax' or 'Strict' as needed)
-        credentials: 'include', // Ensure credentials are included in cross-site requests
+        sameSite: 'None', // Allow cross-site cookies 
+        credentials: 'include', // Ensure credentials
     },
 };
 

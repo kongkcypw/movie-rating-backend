@@ -125,3 +125,101 @@ exports.deleteMovie = async (movieId) => {
         throw error;
     }
 }
+
+exports.getMovieCountsByYear = async () => {
+    try {
+        const query = `
+            SELECT 
+                yearReleased, 
+                COUNT(*) AS movieCount 
+            FROM 
+                movie 
+            GROUP BY 
+                yearReleased 
+            ORDER BY 
+                yearReleased DESC;
+        `;
+        const [rows] = await mysqlDB.query(query);
+        return rows;
+    } catch (error) {
+        console.error('Error in getMovieCountsByYear:', error);
+        throw error;
+    }
+};
+
+exports.getMovieCountsByRating = async () => {
+    try {
+        const query = `
+            SELECT 
+                m.rating, 
+                COUNT(*) AS movieCount 
+            FROM 
+                movie m
+            JOIN
+                rate r ON m.rating = r.rateId
+            GROUP BY 
+                rating 
+            ORDER BY 
+                rating;
+        `;
+        const [rows] = await mysqlDB.query(query);
+        return rows;
+    } catch (error) {
+        console.error('Error in getMovieCountsByRating:', error);
+        throw error;
+    }
+};
+
+exports.getOldestMovie = async () => {
+    try {
+        const query = `
+            SELECT 
+                * 
+            FROM 
+                movie 
+            ORDER BY 
+                yearReleased ASC
+            LIMIT 1;
+        `;
+        const [rows] = await mysqlDB.query(query);
+        return rows[0]; // Return the first (and only) row
+    } catch (error) {
+        console.error('Error in getOldestMovie:', error);
+        throw error;
+    }
+};
+
+exports.getNewestMovie = async () => {
+    try {
+        const query = `
+            SELECT 
+                * 
+            FROM 
+                movie 
+            ORDER BY 
+                yearReleased DESC
+            LIMIT 1;
+        `;
+        const [rows] = await mysqlDB.query(query);
+        return rows[0]; // Return the first (and only) row
+    } catch (error) {
+        console.error('Error in getNewestMovie:', error);
+        throw error;
+    }
+};
+
+exports.getCountAllMovies = async () => {
+    try {
+        const query = `
+            SELECT 
+                COUNT(*) AS totalMovies 
+            FROM 
+                movie;
+        `;
+        const [rows] = await mysqlDB.query(query);
+        return rows[0].totalMovies; // Return the count
+    } catch (error) {
+        console.error('Error in getCountAllMovies:', error);
+        throw error;
+    }
+};
