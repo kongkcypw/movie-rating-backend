@@ -1,4 +1,5 @@
 const { initializeApp, cert } = require('firebase-admin/app');
+const admin = require('firebase-admin')
 const { getFirestore } = require('firebase-admin/firestore');
 require("dotenv").config()
 
@@ -16,12 +17,15 @@ const serviceAccount = {
     universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN
 };
 
-initializeApp({
-  credential: cert(serviceAccount)
+admin.initializeApp({
+  credential: cert(serviceAccount),
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 });
 
 const firebaseDB = getFirestore();
+const firebaseBucket = admin.storage().bucket();
 
 module.exports = {
-  firebaseDB
+  firebaseDB,
+  firebaseBucket
 }
