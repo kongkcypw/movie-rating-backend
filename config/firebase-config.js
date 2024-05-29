@@ -17,15 +17,13 @@ const serviceAccount = {
     universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN
 };
 
-admin.initializeApp({
+initializeApp({
   credential: cert(serviceAccount),
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET
 });
 
 const firebaseDB = getFirestore();
-const firebaseBucket = admin.storage().bucket();
 
 module.exports = {
   firebaseDB,
-  firebaseBucket
 }
