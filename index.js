@@ -23,7 +23,16 @@ app.use(cookieParser());
 
 // configuration for cors
 const corsOptions = {
-    origin: [process.env.FRONTEND_LOCAL_URL, process.env.FRONTEND_URL], 
+    allowedHeaders: [
+        'Origin',
+        'X-Requested-With',
+        'Content-Type',
+        'Accept',
+        'X-Access-Token',
+        'Access-Control-Allow-Methods',
+    ],
+    methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+    origin: "https://movie-rating-frontend.vercel.app", 
     credentials: true,
 };
 app.use(cors(corsOptions))
