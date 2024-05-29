@@ -29,4 +29,22 @@ router.post(
     movieController.delete
 );
 
+router.post(
+    "/get-count-by-year", 
+    passport.authenticate('jwt', { session: false }),
+    movieController.getCountByYear
+);
+
+router.post(
+    "/get-count-by-rating", 
+    passport.authenticate('jwt', { session: false }),
+    movieController.getCountByRating
+);
+
+router.post(
+    "/get-over-view", 
+    passport.authenticate('jwt', { session: false }),
+    movieController.getOverview
+);
+
 module.exports = router;
