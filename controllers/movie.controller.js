@@ -1,4 +1,4 @@
-const { insertMovie, checkRepeatedMovieId, getAllMovie, updateMovie, deleteMovie, getPublicMoviesByYearRange } = require("../models/movie.model");
+const { insertMovie, checkRepeatedMovieId, getAllMovie, updateMovie, deleteMovie, getPublicMoviesByYearRange, checkRepeatedMovieTitle } = require("../models/movie.model");
 const { uuidv7 } = require('uuidv7');
 const { getAllRateId } = require("../models/rate.model");
 
@@ -34,6 +34,7 @@ exports.get_all = async (req, res) => {
         if (permissionLevel < 1) {
             return res.status(423).json({ message: "you don't have permission to get all field of movieId" });
         }
+
         const movie = await getAllMovie();
         const rate = await getAllRateId();
 
@@ -58,7 +59,13 @@ exports.add_new = async (req, res) => {
         const { movieTitle, yearReleased, rating, movieImageUrl } = req.body;
 
         if (!movieTitle || !yearReleased || !rating || !movieImageUrl) {
-            return res.status(400).json({ message: "all input is require" });
+            return res.status(400).json({ message: "All input is require" });
+        }
+
+        const movieAlreadyExist = await checkRepeatedMovieTitle(movieTitle);
+
+        if (movieAlreadyExist) {
+            return res.status(409).json({ message: "This movie already exist" })
         }
 
         const movieId = await generateUniqueMovieId();
@@ -77,11 +84,15 @@ exports.update = async (req, res) => {
     try {
         const { movieId, movieTitle, rating, movieImageUrl, yearReleased } = req.body;
         const permissionLevel = req.user.permissionLevel;
-        console.log(`permissionLevel ${permissionLevel}`);
 
         if (permissionLevel < 1) {
             return res.status(423).json({ message: "you don't have permission to update movie" });
         }
+
+        if (!movieTitle || !yearReleased || !rating || !movieImageUrl) {
+            return res.status(400).json({ message: "All input is require" });
+        }
+
         const result = await updateMovie(movieId, movieTitle, yearReleased, rating, movieImageUrl);
 
         res.status(200).json({ message: "update movie success", result: result });
