@@ -1,3 +1,4 @@
+// TEST VERSION
 // const cookieConfig = {
 //     options: {
 //         httpOnly: true,
@@ -12,11 +13,10 @@
 //         Credentials: true,
 //     },
 // };
-
 // module.exports = cookieConfig;
 
+// DEPLOY VERSION
 const isProduction = process.env.NODE_ENV === 'production';
-
 const cookieConfig = {
     options: {
         httpOnly: true,

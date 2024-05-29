@@ -30,6 +30,23 @@ exports.checkRepeatedMovieId = async (movieId) => {
     }
 }
 
+exports.checkRepeatedMovieTitle = async (movieTitle) => {
+    try {
+        const query =
+        `SELECT
+            movieTitle
+        FROM 
+            movie
+        WHERE
+        movieTitle = ?;`
+        const [rows] = await mysqlDB.query(query, [movieTitle]);
+        return rows.length > 0;
+    } catch (error) {
+        console.log(error);
+        throw error
+    }
+}
+
 exports.getAllMovie = async () => {
     try {
         const query =
@@ -51,7 +68,7 @@ exports.getAllMovie = async () => {
     }
 }
 
-// Not select MovieId
+// Not send MovieId
 exports.getPublicMoviesByYearRange = async (startYear, endYear) => {
     try {
         const query = `

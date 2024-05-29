@@ -1,14 +1,4 @@
-const { firebaseDB } = require("../config/firebase-config");
 const { mysqlDB } = require("../config/mysql-config");
-
-// exports.get_all_user = async () => {
-//     try{
-//         const snapshot = await firebaseDB.collection('users').get();
-//         return snapshot;
-//     } catch (error) {
-//         throw error
-//     }
-// }
 
 exports.get_all_user = async () => {
     try {
@@ -34,8 +24,8 @@ exports.findUser = async (username) => {
         FROM 
             user
         WHERE
-            username = '${username}' OR email = '${username}';`
-        const [rows] = await mysqlDB.query(query);
+            username = ? OR email = ?;`
+        const [rows] = await mysqlDB.query(query, [username, username]);
         if (rows.length > 0) {
             return rows[0];  
         } else {
@@ -52,8 +42,8 @@ exports.insertUser = async (userId, username, email, password, role, permissionL
         const query =
         `INSERT INTO 
             user (userId, username, email, password, role, permissionLevel) 
-            VALUES ('${userId}', '${username}', '${email}', '${password}', '${role}', '${permissionLevel}')`
-        const [rows] = await mysqlDB.query(query);
+            VALUES (?,?,?,?,?,?)`;
+        const [rows] = await mysqlDB.query(query, [userId, username, email, password, role, permissionLevel]);
         if (rows.length > 0) {
             return rows[0];  // Return the first row
         } else {
@@ -73,8 +63,8 @@ exports.checkUsernameAlreadyExist = async (username) => {
         FROM 
             user
         WHERE
-            username = '${username}';`
-        const [rows] = await mysqlDB.query(query);
+            username = ?;`;
+        const [rows] = await mysqlDB.query(query, [username]);
         if (rows.length > 0) {
             return rows[0];  // Return the first row
         } else {
@@ -94,8 +84,8 @@ exports.checkEmailAlreadyExist = async (email) => {
         FROM 
             user
         WHERE
-            email = '${email}';`
-        const [rows] = await mysqlDB.query(query);
+            email = ?;`
+        const [rows] = await mysqlDB.query(query, [email]);
         if (rows.length > 0) {
             return rows[0]; 
         } else {
@@ -115,8 +105,8 @@ exports.checkRepeatedUserId = async (userId) => {
         FROM 
             user
         WHERE
-            userId = '${userId}';`
-        const [rows] = await mysqlDB.query(query);
+            userId = ?;`
+        const [rows] = await mysqlDB.query(query, [userId]);
         return rows.length > 0;
     } catch (error) {
         console.log(error);
@@ -136,8 +126,8 @@ exports.getUserByUserId = async (userId) => {
         FROM 
             user
         WHERE
-        userId = '${userId}';`
-        const [rows] = await mysqlDB.query(query);
+        userId = ?;`
+        const [rows] = await mysqlDB.query(query, [userId]);
         if (rows.length > 0) {
             return rows[0];  // Return the first row
         } else {
