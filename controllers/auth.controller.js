@@ -182,20 +182,8 @@ exports.refresh = async (req, res) => {
 
 exports.logout = (req, res) => {
     try{
-        res.clearCookie('accessToken', {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'None',
-            domain: 'movie-rating-backend.vercel.app',
-            path: '/',
-        });
-        res.clearCookie('refreshToken', {
-            httpOnly: false,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'None',
-            domain: 'movie-rating-backend.vercel.app',
-            path: '/',
-        });
+        res.clearCookie('accessToken', opts.options);
+        res.clearCookie('refreshToken', opts.refreshOptions);
         return res.status(200).json({ message: 'Logged out successfully' });
     } catch(error) {
         console.error(err);
