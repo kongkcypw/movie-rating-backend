@@ -34,6 +34,7 @@ const corsOptions = {
     methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
     origin: ["https://movie-rating-frontend.vercel.app", "http://localhost:5173"],
     credentials: true,
+    preflightContinue: false
 };
 app.use(cors(corsOptions))
 
